@@ -22,8 +22,14 @@
         throw new Error(data.error);
       }
 
-      // Redirect to profile page after successful login
-      goto('/profile');
+      if (data.success && data.user) {
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // Redirect to profile page after successful login
+        goto('/profile');
+      } else {
+        throw new Error('Login failed');
+      }
     } catch (e) {
       error = e instanceof Error ? e.message : 'Login failed';
     }
